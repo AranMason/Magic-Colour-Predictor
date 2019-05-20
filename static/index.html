@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>
+			Magic Colour Predictor
+		</title>
+
+		<link rel="stylesheet" href="css/styles.css">
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+		<script src="js/scripts.js"></script>
+
+
+	</head>
+
+	<body>
+
+		<div id="container">
+			<div id="header">
+				<div id="header-title">
+					<h1>Magic: The Gathering colour predictor</h1>
+				</div>
+
+				<div id="header-buttons">
+					<div id="button-container">
+						<input id="image-selector-input" class="hidden" type="file">
+						<label id="image-selector" class="button" for="image-selector-input"> Choose an Image</label>
+					</div>
+					<div id="button-container">
+						<button id="predict-button" class="hidden"></button>
+						<label id="predict-button" class="button" for="predict-button">Predict</label>
+					</div>
+				</div>
+
+			</div>
+
+			<div id="content-container">
+				<div id="image-container">
+					<div id="image-display">
+						<img id="selected-image" style="max-width:500px" src=""/>
+					</div>
+
+				</div>
+				<div id="prediction-container">
+
+					<h2 id="predictions-header">Predictions</h2>
+
+					<div id="predictions">
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+
+		<script>
+			let base64Image;
+			$("#image-selector-input").change(() => {
+				console.log("Change")
+				let reader = new FileReader();
+				reader.onload = (e) => {
+					let dataURL = reader.result
+					$("#selected-image").attr("src", dataURL);
+					base64Image = dataURL.split(",")[1]
+					console.log(base64Image);
+				}
+				reader.readAsDataURL($("#image-selector-input")[0].files[0])
+				$("#dog-prediction").text("");
+				$("#cat-prediction").text("");
+				$("#horse-prediction").text("");
+			})
+
+			$("#predict-button").click((event) => {
+				let message = {
+					image: base64Image
+				}
+
+				function toPercent(str){
+					return (parseFloat(str)*100).toFixed(2) + "%"
+				}
+
+				$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
+
+					var pred = $("#predictions")
+					pred.empty()
+
+					let sorted = Object.keys(res).sort((a, b) => {
+						return res[b] - res[a]
+					})
+
+					sorted.forEach(item => {
+						pred.append(`
+							<div id=\"prediction-color-${item}\" class=\"prediction-color\">
+								<img class="color-icon" alt=\"{${item}}\"" src=\"${getColorIcon(item)}\"""/>
+								<div class="color-results">
+									${toPercent(res[item])}
+								</div>
+								<div id="color-bar">
+									<div id=\"prediction-color-${item}-bar\" class="prediction-bar" style="width: ${toPercent(res[item])}">
+									</div>
+								</div>
+
+
+							</div>`)
+					})
+
+					console.log(res)
+				})
+
+			})
+		</script>
+
+
+	</body>
+
+</html>
