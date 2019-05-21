@@ -29,6 +29,8 @@ model_file = '/home/ubuntu/Magic-Colour-Predictor/models/model_complete.h5'
 
 app = Flask(__name__)
 
+if __name__ == '__main__':
+	app.run(host="0.0.0.0")
 
 class ReverseProxied(object):
     '''Wrap the application in this middleware and configure the
