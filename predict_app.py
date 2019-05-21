@@ -1,7 +1,5 @@
 print(" * Starting Web App")
 
-# import os; os.environ['KERAS_BACKEND'] = 'theano'
-
 import base64
 import numpy as np
 import io
@@ -41,27 +39,13 @@ def get_classes():
 
 def get_model():
 	print(" * Loading Keras Model...")
-	# K.clear_session()
-
-
-	# # Read JSON Model
-	# json_file = open('model.json', 'r')
-	# loaded_model_json = json_file.read()
-	# json_file.close()
-	# loaded_model = model_from_json(loaded_model_json)
-
-	# # Get model weights
-	# loaded_model.load_weights('model_weights.h5')
-
-	# loaded_model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
-
 	global model
 	with CustomObjectScope({'relu6': keras.applications.mobilenet.relu6,'DepthwiseConv2D': keras.applications.mobilenet.DepthwiseConv2D}):
 		model = load_model(model_file)
 	# model._make_predict_function()
 
 	print(' * Model Loaded!')
-	model.summary()
+	# model.summary()
 
 def preprocess_image(image, target_size):
 	if image.mode != 'RGB':
@@ -82,30 +66,17 @@ get_classes()
 def predict():
 	global graph
 	with graph.as_default():
-		print("Handling Prediction Request")
-
 		message = request.get_json(force=True)
 
 		encoded = message["image"]
-		print("Retrieved encoded message")
 		decoded = base64.b64decode(encoded)
 
-		print("Decoded message")
-
 		image = Image.open(io.BytesIO(decoded))
-
-		print("Coverted to image file")
-
 		processed_image = preprocess_image(image, target_size=(224, 224))
 
-		print("Processed image")
 		prediction = model.predict(processed_image)
 
-		print(prediction)
-
-		response = {
-
-		}
+		response = {}
 
 		for key in classes.keys():
 			response[key] = str(prediction[0][classes[key]])
