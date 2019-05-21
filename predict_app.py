@@ -25,47 +25,12 @@ K.clear_session()
 
 graph = tf.get_default_graph()
 
-model_file = '/home/ubuntu/Magic-Colour-Predictor/models/model_complete.h5'
+model_file = 'models/model_complete.h5'
 
 app = Flask(__name__)
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0")
-
-class ReverseProxied(object):
-    '''Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind
-    this to a URL other than / and to an HTTP scheme that is
-    different than what is used locally.
-
-    In nginx:
-    location /myprefix {
-        proxy_pass http://192.168.0.1:5001;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-        proxy_set_header X-Script-Name /myprefix;
-        }
-
-    :param app: the WSGI application
-    '''
-    def __init__(self, app):
-        self.app = app
-
-    def __call__(self, environ, start_response):
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
-        if script_name:
-            environ['SCRIPT_NAME'] = script_name
-            path_info = environ['PATH_INFO']
-            if path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
-
-        scheme = environ.get('HTTP_X_SCHEME', '')
-        if scheme:
-            environ['wsgi.url_scheme'] = scheme
-        return self.app(environ, start_response)
-
-app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 def get_classes():
 	global classes
@@ -113,7 +78,7 @@ print("Using Keras Version: ", keras.__version__)
 get_model()
 get_classes()
 
-@app.route('/api/predict', methods=["POST"])
+@app.route('/predict', methods=["POST"])
 def predict():
 	global graph
 	with graph.as_default():
@@ -149,18 +114,5 @@ def predict():
 
 @app.route('/test')
 def test():
-	global graph
-	with graph.as_default():
 
-		print("Running Test Route")
-		img = load_img('data/60772895_2139110652808772_1139490257108992000_n.jpg', target_size=(224, 224))
-
-		img = img_to_array(img)
-
-		img = np.expand_dims(img, axis=0)
-
-		predict = model.predict(img)
-
-		print(predict)
-
-		return predict
+	return "Web Server is Running"
