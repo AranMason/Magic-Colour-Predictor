@@ -33,3 +33,58 @@ function getColorIcon(color) {
 			return "https://gamepedia.cursecdn.com/mtgsalvation_gamepedia/1/1a/C.svg?version=e56220986714ca2913b90a938b196a9e";
 	}
 }
+
+let base64Image;
+			$("#image-selector-input").change(() => {
+				console.log("Change")
+				let reader = new FileReader();
+				reader.onload = (e) => {
+					let dataURL = reader.result
+					$("#selected-image").attr("src", dataURL);
+					base64Image = dataURL.split(",")[1]
+					console.log(base64Image);
+				}
+				reader.readAsDataURL($("#image-selector-input")[0].files[0])
+				$("#dog-prediction").text("");
+				$("#cat-prediction").text("");
+				$("#horse-prediction").text("");
+			})
+
+			$("#predict-button").click((event) => {
+				let message = {
+					image: base64Image
+				}
+
+				function toPercent(str){
+					return (parseFloat(str)*100).toFixed(2) + "%"
+				}
+
+				$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
+
+					var pred = $("#predictions")
+					pred.empty()
+
+					let sorted = Object.keys(res).sort((a, b) => {
+						return res[b] - res[a]
+					})
+
+					sorted.forEach(item => {
+						pred.append(`
+							<div id=\"prediction-color-${item}\" class=\"prediction-color\">
+								<img class="color-icon" alt=\"{${item}}\"" src=\"${getColorIcon(item)}\"""/>
+								<div class="color-results">
+									${toPercent(res[item])}
+								</div>
+								<div id="color-bar">
+									<div id=\"prediction-color-${item}-bar\" class="prediction-bar" style="width: ${toPercent(res[item])}">
+									</div>
+								</div>
+
+
+							</div>`)
+					})
+
+					console.log(res)
+				})
+
+			})
