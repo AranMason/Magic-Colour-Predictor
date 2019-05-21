@@ -21,8 +21,6 @@ from flask import request
 from flask import jsonify
 from flask import Flask
 
-from flask_cors import CORS
-
 K.clear_session()
 
 graph = tf.get_default_graph()
@@ -33,9 +31,9 @@ app = Flask(__name__)
 
 
 class ReverseProxied(object):
-    '''Wrap the application in this middleware and configure the 
-    front-end server to add these headers, to let you quietly bind 
-    this to a URL other than / and to an HTTP scheme that is 
+    '''Wrap the application in this middleware and configure the
+    front-end server to add these headers, to let you quietly bind
+    this to a URL other than / and to an HTTP scheme that is
     different than what is used locally.
 
     In nginx:
@@ -66,8 +64,6 @@ class ReverseProxied(object):
         return self.app(environ, start_response)
 
 app.wsgi_app = ReverseProxied(app.wsgi_app)
-
-CORS(app)
 
 def get_classes():
 	global classes
