@@ -38,6 +38,12 @@ function toPercent(str) {
 	return (parseFloat(str) * 100).toFixed(2) + "%"
 }
 
+function loadingPredictionDisplay(){
+	var pred = $("#predictions")
+	pred.empty()
+	pred.append(`<div id="prediction-loading">Loading Predictions</div>`)
+}
+
 function generatePredictionDisplay(res) {
 	var pred = $("#predictions")
 	pred.empty()
@@ -84,7 +90,7 @@ function makePrediction(){
 }
 
 $("#image-selector-input").change(() => {
-	console.log("Test")
+	;loadingPredictionDisplay();
 	let reader = new FileReader();
 	reader.onload = (e) => {
 		let dataURL = reader.result

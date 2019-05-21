@@ -126,6 +126,10 @@ img{
 	flex-direction: column;
 }
 
+#prediction-loading{
+	margin:auto;
+}
+
 .prediction-color {
 	height: 50px;
 	padding: 5px;
