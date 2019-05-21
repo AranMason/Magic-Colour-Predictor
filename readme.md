@@ -15,3 +15,10 @@ The following Python modules are used
 - Pillow
 - sklearn
 - numpy
+
+## Hosting
+
+To host the application, is in a AWS EC2 Instance using the following:
+- Nginx
+- Flask
+- Gunicorn
