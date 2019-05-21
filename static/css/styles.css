@@ -139,6 +139,22 @@ img{
 	display: flex;
 }
 
+#website-about {
+	background-color: #E0E2DB;
+	padding-left: 12px;
+	border-radius: 5px;
+	flex: 1;
+	margin-top: 32px;
+}
+
+h2 {
+	border-style: solid;
+	border-width: 0px 0px 2px 0px;
+	padding-bottom: 5px;
+	border-color: #8B2635;
+	margin-right: 12px;
+}
+
 .color-icon {
 	padding-right: 12px;
 	display: flex;
