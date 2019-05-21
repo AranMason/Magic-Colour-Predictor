@@ -14,3 +14,4 @@ The following Python modules are used
 - TensorFlow
 - Pillow
 - sklearn
+- numpy
