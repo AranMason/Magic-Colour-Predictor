@@ -72,17 +72,7 @@ generatePredictionDisplay({
 	colorless: 0
 })
 
-$("#image-selector-input").change(() => {
-	let reader = new FileReader();
-	reader.onload = (e) => {
-		let dataURL = reader.result
-		$("#image-display").css("background-image", "url(" + dataURL + ")");
-		base64Image = dataURL.split(",")[1]
-	}
-	reader.readAsDataURL($("#image-selector-input")[0].files[0])
-})
-
-$("#predict-button").click((event) => {
+function makePrediction(){
 	let message = {
 		image: base64Image
 	}
@@ -91,5 +81,22 @@ $("#predict-button").click((event) => {
 	$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
 		generatePredictionDisplay(res)
 	})
+}
 
+$("#image-selector-input").change(() => {
+	console.log("Test")
+	let reader = new FileReader();
+	reader.onload = (e) => {
+		let dataURL = reader.result
+		console.log(dataURL)
+		$("#image-display").css("background-image", "url(" + dataURL + ")");
+		base64Image = dataURL.split(",")[1]
+
+		makePrediction();
+	}
+	reader.readAsDataURL($("#image-selector-input")[0].files[0])
+})
+
+$("#predict-button").click((event) => {
+	makePrediction();
 })
