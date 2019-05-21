@@ -14,7 +14,7 @@ from sklearn.metrics import confusion_matrix
 import itertools
 
 
-epochs = 10
+epochs = 60
 
 train_path = 'mtg/test'
 
@@ -27,10 +27,10 @@ train_batches = IDG.flow_from_directory(train_path,
 										class_mode='categorical',
 										shuffle=True)
 
-# valid_batches = IDG.flow_from_directory(train_path,
-# 										target_size=(224, 224),
-# 										batch_size=10,
-# 										subset='validation')
+valid_batches = IDG.flow_from_directory(train_path,
+										target_size=(224, 224),
+										batch_size=32,
+										subset='validation')
 
 print("Classes: ", train_batches.class_indices)
 
@@ -65,6 +65,7 @@ step_size_train = train_batches.n//train_batches.batch_size
 
 model.fit_generator(train_batches,
 					steps_per_epoch=step_size_train,
+					validation_data=valid_batches,
 					epochs=epochs,
 					verbose=2)
 
