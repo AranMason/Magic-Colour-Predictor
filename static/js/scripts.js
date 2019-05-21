@@ -84,7 +84,7 @@ function makePrediction(){
 	}
 
 
-	$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
+	$.post("/predict", JSON.stringify(message), (res) => {
 		generatePredictionDisplay(res)
 	})
 }
