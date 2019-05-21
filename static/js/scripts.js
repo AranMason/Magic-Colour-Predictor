@@ -90,7 +90,7 @@ function makePrediction(){
 }
 
 $("#image-selector-input").change(() => {
-	;loadingPredictionDisplay();
+	loadingPredictionDisplay();
 	let reader = new FileReader();
 	reader.onload = (e) => {
 		let dataURL = reader.result
