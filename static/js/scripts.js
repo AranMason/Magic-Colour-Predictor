@@ -1,5 +1,5 @@
-function getColorName(color){
-	switch (color){
+function getColorName(color) {
+	switch (color) {
 		case 'B':
 			return 'Black'
 		case 'U':
@@ -18,7 +18,7 @@ function getColorName(color){
 }
 
 function getColorIcon(color) {
-	switch(color){
+	switch (color) {
 		case 'G':
 			return "https://gamepedia.cursecdn.com/mtgsalvation_gamepedia/8/88/G.svg?version=df0df93e1e913211caca79c573e08235";
 		case 'R':
@@ -34,42 +34,20 @@ function getColorIcon(color) {
 	}
 }
 
-let base64Image;
-			$("#image-selector-input").change(() => {
-				console.log("Change")
-				let reader = new FileReader();
-				reader.onload = (e) => {
-					let dataURL = reader.result
-					$("#selected-image").attr("src", dataURL);
-					base64Image = dataURL.split(",")[1]
-					console.log(base64Image);
-				}
-				reader.readAsDataURL($("#image-selector-input")[0].files[0])
-				$("#dog-prediction").text("");
-				$("#cat-prediction").text("");
-				$("#horse-prediction").text("");
-			})
+function toPercent(str) {
+	return (parseFloat(str) * 100).toFixed(2) + "%"
+}
 
-			$("#predict-button").click((event) => {
-				let message = {
-					image: base64Image
-				}
+function generatePredictionDisplay(res) {
+	var pred = $("#predictions")
+	pred.empty()
 
-				function toPercent(str){
-					return (parseFloat(str)*100).toFixed(2) + "%"
-				}
+	let sorted = Object.keys(res).sort((a, b) => {
+		return res[b] - res[a]
+	})
 
-				$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
-
-					var pred = $("#predictions")
-					pred.empty()
-
-					let sorted = Object.keys(res).sort((a, b) => {
-						return res[b] - res[a]
-					})
-
-					sorted.forEach(item => {
-						pred.append(`
+	sorted.forEach(item => {
+		pred.append(`
 							<div id=\"prediction-color-${item}\" class=\"prediction-color\">
 								<img class="color-icon" alt=\"{${item}}\"" src=\"${getColorIcon(item)}\"""/>
 								<div class="color-results">
@@ -79,12 +57,39 @@ let base64Image;
 									<div id=\"prediction-color-${item}-bar\" class="prediction-bar" style="width: ${toPercent(res[item])}">
 									</div>
 								</div>
-
-
 							</div>`)
-					})
+	})
+}
 
-					console.log(res)
-				})
+let base64Image;
 
-			})
+generatePredictionDisplay({
+	W: 0,
+	U: 0,
+	B: 0,
+	R: 0,
+	G: 0,
+	colorless: 0
+})
+
+$("#image-selector-input").change(() => {
+	let reader = new FileReader();
+	reader.onload = (e) => {
+		let dataURL = reader.result
+		$("#image-display").css("background-image", "url(" + dataURL + ")");
+		base64Image = dataURL.split(",")[1]
+	}
+	reader.readAsDataURL($("#image-selector-input")[0].files[0])
+})
+
+$("#predict-button").click((event) => {
+	let message = {
+		image: base64Image
+	}
+
+
+	$.post("http://localhost:5000/predict", JSON.stringify(message), (res) => {
+		generatePredictionDisplay(res)
+	})
+
+})
