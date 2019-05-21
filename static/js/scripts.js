@@ -84,7 +84,7 @@ function makePrediction(){
 	}
 
 
-	$.post("/predict", JSON.stringify(message), (res) => {
+	$.post("/api/predict", JSON.stringify(message), (res) => {
 		generatePredictionDisplay(res)
 	})
 }

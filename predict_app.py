@@ -62,7 +62,7 @@ print("Using Keras Version: ", keras.__version__)
 get_model()
 get_classes()
 
-@app.route('/predict', methods=["POST"])
+@app.route('/api/predict', methods=["POST"])
 def predict():
 	global graph
 	with graph.as_default():
@@ -87,3 +87,7 @@ def predict():
 def test():
 
 	return "Web Server is Running"
+
+@app.route('/api/test')
+def api_test():
+	return "API TEST"
