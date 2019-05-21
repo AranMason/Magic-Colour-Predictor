@@ -147,7 +147,8 @@ img{
 }
 
 .prediction-bar {
-	height: 100%
+	height: 100%;
+	border-radius: 0px 5px 5px 0px;
 }
 
 #prediction-color-B-bar {
