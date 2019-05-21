@@ -54,9 +54,7 @@ model = Model(inputs=base_model.input, outputs=preds)
 for layer in model.layers:
     layer.trainable=False
 
-for layer in model.layers[:20]:
-    layer.trainable=False
-for layer in model.layers[20:]:
+for layer in model.layers[-4:]:
     layer.trainable=True
 
 model.summary()
