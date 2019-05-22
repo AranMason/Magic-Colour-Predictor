@@ -4,7 +4,15 @@ Goal here is to adapt the VGG16 to detect what colour of card an image might bel
 
 We use the Scryfall Library. I have written a scrapping tool, which uses information from Scryfalls Bulk Data which can be found [here](https://scryfall.com/docs/api/bulk-data). There is a 0.1s delay between fetches to accomidate Scryfalls rate limiting requests
 
-We ignore multi-colour cards, planeswalkers, schemes, tokens, promos and emblems. This is due to either poor cropped art provided by Scryfall and to simplify approach to colour classification.
+## Ignored Card Types
+We ignore the following due to either poor cropped art provided by the Scryfall API or to simplify approach to colour classification. I am currently debating removing colourless from being classified.
+- Multi-colour
+- Planeswalker
+- Schemes
+- Tokens
+- Promos
+- Emblems
+
 
 ## Requirements
 
@@ -15,3 +23,10 @@ The following Python modules are used
 - Pillow
 - sklearn
 - numpy
+
+## Hosting
+
+To host the application, is in a AWS EC2 Instance using the following:
+- Nginx
+- Flask
+- Gunicorn
