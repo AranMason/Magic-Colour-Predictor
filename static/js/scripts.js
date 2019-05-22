@@ -86,7 +86,8 @@ function makePrediction(){
 
 	$.post("/api/predict", JSON.stringify(message), (res) => {
 		generatePredictionDisplay(res)
-	}).error(() => {
+	}).fail((xhr, textStatus, errorThrown) => {
+		console.log(xhr.responseText);
 		generatePredictionDisplay({
 			W: 0,
 			U: 0,
