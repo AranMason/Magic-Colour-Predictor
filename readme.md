@@ -1,3 +1,5 @@
+# Try for yourself
+Webpage: [mtg.aran.nz](https://mtg.aran.nz)
 # Downloading MTG Data
 
 Goal here is to adapt the VGG16 to detect what colour of card an image might belong to using the whole of MTG's history
