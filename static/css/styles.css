@@ -115,6 +115,7 @@ body {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
+	justify-content: start;
 }
 
 #prediction-loading{
@@ -128,6 +129,9 @@ body {
 	vertical-align: middle;
 	margin-right: 24px;
 	display: flex;
+	/*! width: 50px; */
+	flex-direction: row;
+	/*! flex: 1; */
 }
 
 #website-about {
@@ -148,7 +152,8 @@ h2 {
 
 .color-icon {
 	padding-right: 12px;
-	display: flex;
+	/*! display: flex; */
+	width: 50px;
 }
 
 .color-results {
@@ -156,15 +161,20 @@ h2 {
 	display: flex;
 	justify-content: center;
 	flex-direction:column;
+	/*! flex: 1; */
 }
 
 #color-bar {
 	flex: 1;
+	display: flex;
+	/*! width: 100px; */
+	height: 50px;
 }
 
 .prediction-bar {
 	height: 100%;
 	border-radius: 0px 5px 5px 0px;
+	/*! flex: 1; */
 }
 
 #prediction-color-B-bar {
