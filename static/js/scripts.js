@@ -86,6 +86,15 @@ function makePrediction(){
 
 	$.post("/api/predict", JSON.stringify(message), (res) => {
 		generatePredictionDisplay(res)
+	}).error(() => {
+		generatePredictionDisplay({
+			W: 0,
+			U: 0,
+			B: 0,
+			R: 0,
+			G: 0,
+			colorless: 0
+		})
 	})
 }
 
