@@ -38,10 +38,10 @@ function toPercent(str) {
 	return (parseFloat(str) * 100).toFixed(2) + "%"
 }
 
-function loadingPredictionDisplay(){
+function loadingPredictionDisplay(text="Loading Predictions"){
 	var pred = $("#predictions")
 	pred.empty()
-	pred.append(`<div id="prediction-loading">Loading Predictions</div>`)
+	pred.append(`<div id="prediction-loading">${text}</div>`)
 }
 
 function generatePredictionDisplay(res) {
@@ -88,14 +88,7 @@ function makePrediction(){
 		generatePredictionDisplay(res)
 	}).fail((xhr, textStatus, errorThrown) => {
 		console.log(xhr.responseText);
-		generatePredictionDisplay({
-			W: 0,
-			U: 0,
-			B: 0,
-			R: 0,
-			G: 0,
-			colorless: 0
-		})
+		loadingPredictionDisplay("File was too large. Try files smaller thant 1MB.")
 	})
 }
 
