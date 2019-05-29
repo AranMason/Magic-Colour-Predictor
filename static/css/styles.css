@@ -168,13 +168,13 @@ h2 {
 	display: flex;
 	justify-content: center;
 	flex-direction:column;
+	width: 100px;
 	/*! flex: 1; */
 }
 
 .color-bar {
 	flex: 1;
 	display: flex;
-	/*! width: 100px; */
 	height: 50px;
 }
 
