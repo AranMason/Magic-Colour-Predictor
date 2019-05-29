@@ -17,6 +17,35 @@ function getColorName(color) {
 	return null
 }
 
+function resizeImage(image) {
+
+	let canvas = document.createElement('canvas');
+	maxSize = 1200;
+
+	var width = image.width;
+	var height = image.height;
+
+	console.log(image, image.naturalWidth, image.naturalHeight);
+
+	if (width > height) {
+		if (width > maxSize) {
+			height *= maxSize / width;
+			width = maxSize;
+		}
+	} else {
+		if (height > maxSize) {
+			width *= maxSize / height;
+			height = maxSize;
+		}
+	}
+	canvas.width = width;
+	canvas.height = height;
+	canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+	console.log(canvas);
+	var dataUrl = canvas.toDataURL('image/jpeg');
+	return dataUrl;
+}
+
 function getColorIcon(color) {
 	switch (color) {
 		case 'G':
@@ -38,7 +67,7 @@ function toPercent(str) {
 	return (parseFloat(str) * 100).toFixed(2) + "%"
 }
 
-function loadingPredictionDisplay(text="Loading Predictions"){
+function loadingPredictionDisplay(text = "Loading Predictions") {
 	var pred = $("#predictions")
 	pred.empty()
 	pred.append(`<div id="prediction-loading">${text}</div>`)
@@ -99,7 +128,7 @@ initalizePredictionDisplay({
 	colorless: 0
 })
 
-function makePrediction(){
+function makePrediction() {
 	let message = {
 		image: base64Image
 	}
@@ -117,12 +146,21 @@ $("#image-selector-input").change(() => {
 	//loadingPredictionDisplay();
 	let reader = new FileReader();
 	reader.onload = (e) => {
-		let dataURL = reader.result
-		console.log(dataURL)
-		$("#image-display").css("background-image", "url(" + dataURL + ")");
-		base64Image = dataURL.split(",")[1]
 
-		makePrediction();
+		let image = new Image()
+
+		image.onload = () => {
+
+			let dataURL = resizeImage(image);
+
+			$("#image-display").css("background-image", "url(" + dataURL + ")");
+			base64Image = dataURL.split(",")[1]
+
+			makePrediction();
+		}
+
+		image.src = reader.result
+
 	}
 	reader.readAsDataURL($("#image-selector-input")[0].files[0])
 })
