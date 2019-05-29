@@ -44,32 +44,53 @@ function loadingPredictionDisplay(text="Loading Predictions"){
 	pred.append(`<div id="prediction-loading">${text}</div>`)
 }
 
-function generatePredictionDisplay(res) {
-	var pred = $("#predictions")
-	pred.empty()
+function initalizePredictionDisplay(res) {
+	var pred = $("#predictions");
 
-	let sorted = Object.keys(res).sort((a, b) => {
-		return res[b] - res[a]
-	})
-
-	sorted.forEach(item => {
+	Object.keys(res).forEach((item, index) => {
 		pred.append(`
-							<div id=\"prediction-color-${item}\" class=\"prediction-color\">
-								<img class="color-icon" alt=\"{${item}}\"" src=\"${getColorIcon(item)}\"""/>
+							<div id="prediction-color-${item}" class=\"prediction-color\" style="order: ${index}">
+								<img class="color-icon" src=\"${getColorIcon(item)}\"""/>
 								<div class="color-results">
 									${toPercent(res[item])}
 								</div>
-								<div id="color-bar">
-									<div id=\"prediction-color-${item}-bar\" class="prediction-bar" style="width: ${toPercent(res[item])}">
+								<div class="color-bar">
+									<div id="prediction-color-${item}-bar" class="prediction-bar" style="width: ${toPercent(res[item]+0.1)}">
 									</div>
 								</div>
 							</div>`)
 	})
 }
 
+function generatePredictionDisplay(res) {
+
+	console.log("Updating Display");
+
+	var pred = $("#predictions")
+	//pred.empty()
+
+	let sorted = Object.keys(res).sort((a, b) => {
+		return res[b] - res[a]
+	})
+
+	sorted.forEach((item, index) => {
+		console.log(item, toPercent(res[item]));
+
+		let percent = toPercent(res[item]);
+
+		let current = $(`div#prediction-color-${item}`)
+
+		current.css('order', index);
+
+		current.children("div.color-bar").children(".prediction-bar").width(percent)
+
+		current.children("div.color-results").text(percent)
+	})
+}
+
 let base64Image;
 
-generatePredictionDisplay({
+initalizePredictionDisplay({
 	W: 0,
 	U: 0,
 	B: 0,
@@ -93,7 +114,7 @@ function makePrediction(){
 }
 
 $("#image-selector-input").change(() => {
-	loadingPredictionDisplay();
+	//loadingPredictionDisplay();
 	let reader = new FileReader();
 	reader.onload = (e) => {
 		let dataURL = reader.result
