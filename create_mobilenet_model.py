@@ -16,7 +16,7 @@ import itertools
 import datetime
 
 now = datetime.datetime.now()
-LOG_DIR = './logs/mobile_net/%d' % now.strftime("%Y-%m-%d %H:%M")
+LOG_DIR = './logs/mobile_net' #% now.strftime("%Y-%m-%d %H:%M")
 
 epochs = 60
 
@@ -63,7 +63,7 @@ for layer in model.layers[-4:]:
 
 model.summary()
 
-model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy', 'categorical_crossentropy'])
 
 step_size_train = train_batches.n//train_batches.batch_size
 
