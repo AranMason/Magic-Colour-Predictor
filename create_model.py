@@ -16,7 +16,7 @@ import datetime
 
 now = datetime.datetime.now()
 
-LOG_DIR = './logs/%d' % now.strftime("%Y-%m-%d %H:%M")
+LOG_DIR = './logs/vgg16/%d' % now.strftime("%Y-%m-%d %H:%M")
 
 epochs = 10
 

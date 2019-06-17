@@ -13,6 +13,10 @@ import json
 from sklearn.metrics import confusion_matrix
 import itertools
 
+import datetime
+
+now = datetime.datetime.now()
+LOG_DIR = './logs/mobile_net/%d' % now.strftime("%Y-%m-%d %H:%M")
 
 epochs = 60
 
@@ -67,7 +71,7 @@ model.fit_generator(train_batches,
 					steps_per_epoch=step_size_train,
 					validation_data=valid_batches,
 					epochs=epochs,
-					verbose=2)
+					callbacks=[keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=0, write_images=True)])
 
 
 json_model = model.to_json()
